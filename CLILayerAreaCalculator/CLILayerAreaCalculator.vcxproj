@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Header.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Point.h" />

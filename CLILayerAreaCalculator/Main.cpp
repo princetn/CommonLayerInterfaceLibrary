@@ -3,6 +3,7 @@
 * Author: Amir Gasmi <argasmi@gmail.com>
 * Date: 1/10/2022
 */
+
 #include "Polyline.h"
 #include "Parser.h"
 #include <iostream>
@@ -17,6 +18,8 @@ void checkarguments(int argc);
 
 int main(int argc, char** argv)
 {
+	string path = R"(D:\MyDownloads\CLI-Candidate-Kit-04-06-21\CLI\box_cli_ascii.cli)";
+	cout << path << endl;
 	Point<float> ptf;
 	ptf.X = 10;
 	ptf.Y = 2.0;
@@ -39,6 +42,7 @@ int main(int argc, char** argv)
 	ptf1.Y = 0;
 	poly.Points->push_back(ptf1);
 	cout << "The area of the triangle is: " << poly.getArea() << endl;
+	auto geometry = Parser<float>::ImportCliFile(path);
 
 
 

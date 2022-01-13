@@ -23,6 +23,7 @@ namespace CLI
 		Point<T>& operator=(const Point<T>& Other);
 		Property<T> X;
 		Property<T> Y;
+		Property<int> Id;
 	
 
 		virtual ~Point(void);
@@ -51,6 +52,7 @@ CLI::Point<T>::Point(const Point<T>& Other)
 {
 	X = Other.X();
 	Y = Other.Y();
+	Id = Other.Id();
 }
 
 template<typename T>
@@ -59,6 +61,7 @@ CLI::Point<T>& CLI::Point<T>::operator=(const Point<T>& Other)
 	
 	X = Other.X();
 	Y = Other.Y();
+	Id = Other.Id();
 	return *this;
 }
 

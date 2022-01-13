@@ -42,6 +42,17 @@ namespace CLI
 	{
 	}
 	template<typename T>
+	Polyline<T>::Polyline(const Polyline<T>& Other)
+	{
+		Points = Other.Points();
+	}
+	template<typename T>
+	inline Polyline<T>& Polyline<T>::operator=(const Polyline<T>& Other)
+	{
+		Points = Other.Points();
+		return *this;
+	}
+	template<typename T>
 	T Polyline<T>::getArea(void)
 	{ // formula is obtained from url: https://en.wikipedia.org/wiki/Shoelace_formula
 
