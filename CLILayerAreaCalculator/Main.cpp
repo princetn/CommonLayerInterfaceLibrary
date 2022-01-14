@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "Point.h"
+#include <thread>
 
 using namespace std;
 using namespace CLI;
@@ -24,22 +25,27 @@ int main(int argc, char** argv)
 {
 	Layer<float> layer;
 	cout << copyright_msg << endl;
+	cout<< "PID: "<<std::this_thread::get_id() << endl;
+	string path = R"(D:\MyDownloads\CLI-Candidate-Kit-04-06-21\CLI\VulcanFormsSamplePartA.cli)";
 
-	string path = R"(D:\MyDownloads\CLI-Candidate-Kit-04-06-21\CLI\VulcanFormsSamplePartI.cli)";
-
-
+	/*
 	ifstream data;
 	data.open(path, ios::in);
 	string line;
-	while(!data.eof())
+	auto pos = (int)data.tellg();
+	data.seekg(0, ios::end);
+	auto size = (int)data.tellg();
+	data.seekg(pos);
+	while(data.tellg() < size)
 	{
 		Parser<float>::getCommandLine(data, line);
 		Parser<float>::trimLine(line);
 		cout<<line<<endl;
+		
 	}
 	data.close();
-
-
+	
+	*/
 
 
 	cout << path << endl;
@@ -93,11 +99,15 @@ int main(int argc, char** argv)
 	geom->Layers->push_back(layer);
 	geom->Layers->push_back(layer);
 	geom->LayerInfo();
+	
 
 	cout << "The area of the triangle is: " << poly.getArea() << endl;
 	auto geometry = Parser<float>::ImportCliFile(path);
 
 	geometry.LayerInfo();
+
+	
+
 
 	cout << "ptf= (" << ptf.X() << ", " << ptf.Y() << ")" << endl;
 	cout << "pt->X()= " << pt->X() << " pt->Y() " << pt->Y() << endl;
