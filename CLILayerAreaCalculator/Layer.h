@@ -1,5 +1,5 @@
 /*
-* This is a Polyline Class utility used to provide area calculation.
+* This is a Layer Class utility used to provide area calculation.
 * Author: Amir Gasmi <argasmi@gmail.com>
 * Date: 1/10/2022
 */
@@ -10,6 +10,8 @@
 #include <iterator>
 #include "Polyline.h"
 #include "Property.h"
+#include "Format.h"
+
 
 namespace CLI
 {
@@ -29,7 +31,9 @@ namespace CLI
 			OuterContours->clear();
 			Hatches->clear();
 		};
-		T getLayerArea(void);
+		T getLayerArea(void) const;
+		template<typename U>
+		friend std::ostream& operator<< (std::ostream& out, const Layer<U>& Other);
 
 		Property<vector<Polyline<T>>> InnerContours;
 		Property<vector<Polyline<T>>> OuterContours;
@@ -69,11 +73,11 @@ namespace CLI
 	}
 
 	template<typename T>
-	T Layer<T>::getLayerArea(void)
+	T Layer<T>::getLayerArea(void) const
 	{
 		T result = (T) 0;
 		//result += OuterContour->getArea();
-		for (auto it = OuterContours->cbegin(); it != OuterContours->cend(); it++)
+		for (auto it = OuterContours->cbegin(); it != OuterContours().cend(); it++)
 		{
 			result += it->getArea();
 		}
@@ -83,6 +87,21 @@ namespace CLI
 		}
 
 		return result;
+	}
+
+	template<typename U>
+	std::ostream& operator<<(std::ostream& out, const Layer<U>& Other)
+	{
+		Formatter::Format<float> f(3);
+		out << "Layer index:";
+		out.width(5);
+		out << std::right << Other.Index() << ", Layer height:";
+		out.width(8);
+		out << std::right << f(Other.Z()) << ", Layer part area:";
+		out.width(11);
+		out << std::right << f(Other.getLayerArea());
+
+		return out;
 	}
 
 }

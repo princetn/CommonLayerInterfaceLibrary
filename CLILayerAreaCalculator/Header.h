@@ -1,5 +1,5 @@
 /*
-* This is a the header data structure corresponding to Common Layer Interface files.
+* This is the header data structure corresponding to Common Layer Interface files.
 * Author: Amir Gasmi <argasmi@gmail.com>
 * Date: 1/12/2022
 */

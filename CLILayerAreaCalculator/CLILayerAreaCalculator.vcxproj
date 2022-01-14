@@ -117,6 +117,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Format.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Layer.h" />

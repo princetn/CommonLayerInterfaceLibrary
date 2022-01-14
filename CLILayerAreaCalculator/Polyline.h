@@ -1,5 +1,5 @@
 /*
-* This is a Polyline Class utility used to provide area calculation.
+* This is a Polyline Class used to provide a polyline utility.
 * Author: Amir Gasmi <argasmi@gmail.com>
 * Date: 1/10/2022
 */
@@ -30,9 +30,10 @@ namespace CLI
 			Points->clear();
 		};
 
-		virtual T getArea(void);
+		virtual T getArea(void) const;
 		 
 		Property<vector<Point<T>>> Points;
+		Property<unsigned int> Id;
 		
 	private:
 		
@@ -45,15 +46,17 @@ namespace CLI
 	Polyline<T>::Polyline(const Polyline<T>& Other)
 	{
 		Points = Other.Points();
+		Id = Other.Id();
 	}
 	template<typename T>
 	inline Polyline<T>& Polyline<T>::operator=(const Polyline<T>& Other)
 	{
 		Points = Other.Points();
+		Id = Other.Id();
 		return *this;
 	}
 	template<typename T>
-	T Polyline<T>::getArea(void)
+	T Polyline<T>::getArea(void) const
 	{ // formula is obtained from url: https://en.wikipedia.org/wiki/Shoelace_formula
 
 		T result = (T) 0;

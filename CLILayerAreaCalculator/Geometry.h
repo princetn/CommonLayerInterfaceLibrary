@@ -1,5 +1,6 @@
 /*
-* This is a Parser utility used for parsing Common Layer Interface files.
+* This is a Geometry Class used for storing Geometry section data from a
+* Common Layer Interface (CLI) files.
 * Author: Amir Gasmi <argasmi@gmail.com>
 * Date: 1/11/2022
 */
@@ -25,6 +26,8 @@ namespace CLI
 		{
 			Layers->clear();
 		};
+
+		void LayerInfo(void) const;
 
 		Property<vector<Layer<T>>> Layers;
 
@@ -54,6 +57,14 @@ namespace CLI
 
 
 		return *this;
+	}
+	template<typename T>
+	void Geometry<T>::LayerInfo(void) const
+	{
+		for (auto val : Layers())
+		{
+			cout << val << endl;
+		}
 	}
 }
 

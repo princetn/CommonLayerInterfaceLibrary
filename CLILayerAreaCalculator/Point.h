@@ -7,7 +7,8 @@
 #ifndef __POINT__
 #define __POINT__
 #include "Property.h"
-
+#include <iostream>
+#include "Format.h"
 
 namespace CLI
 {
@@ -24,6 +25,9 @@ namespace CLI
 		Property<T> X;
 		Property<T> Y;
 		Property<int> Id;
+
+		template<typename U>
+		friend std::ostream& operator<< (std::ostream& out, const Point<U>& Other);
 	
 
 		virtual ~Point(void);
@@ -31,6 +35,13 @@ namespace CLI
 		
 
 	};
+	template<typename U>
+	std::ostream& operator<<(std::ostream& out, const Point<U>& Other)
+	{
+		Formatter::Format<U> f(3);
+		out << "Point: "<<Other.Id()<<" =(" << f(Other.X()) << ", " << f(Other.Y()) << ")";
+		return out;
+	}
 }
 
 
