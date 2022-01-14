@@ -54,11 +54,17 @@ namespace CLI
 		}
 		string line;
 		header->Align = false;
+		data.seekg(0, ios::end);
+
+		auto size = (int)data.tellg();
+		data.seekg(0, ios::beg);
 		
-		while (!data.eof())
+		while (data.tellg() < size)
 		{
 			getCommandLine(data, line);
 			trimLine(line);
+			RemoveComment(line);
+
 			if (line.find("HEADERSTART") != string::npos)
 				continue;
 			if (line.find("HEADEREND") != string::npos)
@@ -112,7 +118,7 @@ namespace CLI
 			
 		}
 		position = data.tellg();
-		cout << "data position "<<data.tellg() <<" position= " << position<< endl;
+		
 		
 
 		
@@ -130,7 +136,7 @@ namespace CLI
 		string s = "HEADEREND";
 		data.seekg(position); // 2 is for carriage & feedline (\r\n)
 
-		cout << "The data has been positioned just after headerend: " << data.tellg() << endl;
+		
 
 		string line;
 		unsigned int idx = 0;
@@ -145,10 +151,15 @@ namespace CLI
 			idx = 1;
 		}
 
-		while (!data.eof())
+		
+		data.seekg(0, ios::end);
+		auto size = (int)data.tellg();
+		data.seekg(position);
+		while (data.tellg() < size)
 		{
 			getCommandLine(data, line);
 			trimLine(line);
+			RemoveComment(line);
 			if (line.find("GEOMETRYSTART") != string::npos)
 				continue;
 			if (line.find("GEOMETRYEND") != string::npos)
@@ -272,7 +283,7 @@ namespace CLI
 		}
 	
 		data.seekg(position);
-		cout << "The binary data has been positioned just after HEADEREND: " << data.tellg() << endl;
+		
 
 		unsigned char* CI = new unsigned char[2];
 		unsigned char* fourbytes = new unsigned char[4];
@@ -537,7 +548,7 @@ namespace CLI
 	Geometry<T>& Parser<T>::ImportCliFile(std::string filename)
 	{ 
 		Geometry<T>* geom = new Geometry<T>();
-		ifstream data(filename, ios::in);
+		ifstream data(filename, ios::in | ios::binary);
 		unsigned int position;
 		auto header = ReadHeader(data, position);
 		if (header.Ftype() == Header<T>::FTYPE::ASCII)
@@ -581,7 +592,7 @@ namespace CLI
 	{
 		line.clear();
 
-		char* s = new char[1];
+		unsigned char* s = new unsigned char[1];
 		unsigned int start = 0, _end = 0;
 		bool first = false, second = false;
 		auto pos = (int)data.tellg();
@@ -590,7 +601,7 @@ namespace CLI
 		data.seekg(pos);
 		while (data.tellg() < (size))
 		{
-			data.read(s, 1);
+			data.read((char*)s, 1);
 			if (first && second)
 			{
 				line.push_back(s[0]);
@@ -629,6 +640,7 @@ namespace CLI
 		string s;
 		for (int i = 0; i < line.size(); i++)
 		{
+			if(line[i] >0)
 			if (isalpha(line[i]) || isdigit(line[i]) || (line[i] == '/') || (line[i] == ',') || (line[i] == '.'))
 			{
 				s.push_back(line[i]);

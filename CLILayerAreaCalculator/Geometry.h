@@ -5,7 +5,6 @@
 * Date: 1/11/2022
 */
 
-
 #ifndef __GEOMETRY__
 #define __GEOMETRY__
 #include "Layer.h"

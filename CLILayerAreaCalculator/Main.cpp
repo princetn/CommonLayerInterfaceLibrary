@@ -23,10 +23,9 @@ under certain conditions; type `show c' for details.)";
 
 int main(int argc, char** argv)
 {
-	Layer<float> layer;
-	cout << copyright_msg << endl;
-	cout<< "PID: "<<std::this_thread::get_id() << endl;
-	string path = R"(D:\MyDownloads\CLI-Candidate-Kit-04-06-21\CLI\VulcanFormsSamplePartA.cli)";
+	
+	//cout<< "PID: "<<std::this_thread::get_id() << endl;
+	string path = R"(D:\MyDownloads\CLI-Candidate-Kit-04-06-21\CLI\box_cli_ascii.cli)";
 
 	/*
 	ifstream data;
@@ -48,60 +47,7 @@ int main(int argc, char** argv)
 	*/
 
 
-	cout << path << endl;
-	Point<float> ptf;
-	ptf.X = 0.600;
-	ptf.Y = 73.323;
-	cout << ptf << endl;
-	Property<float> f ;
-	f = 20;
-	Property<Point<float>> pt;
-	pt = ptf;
-	Polyline<float> poly;
-	Point<float> ptf1;
-	// layer 1;
-	ptf1.X = 0;
-	ptf1.Y = 0;
-	poly.Points->push_back(ptf1);
-	ptf1.X = 0;
-	ptf1.Y = 10;
-	poly.Points->push_back(ptf1);
-	ptf1.X = 10;
-	ptf1.Y = 10;
-	poly.Points->push_back(ptf1);
-	ptf1.X = 10;
-	ptf1.Y = 0;
-	poly.Points->push_back(ptf1);
-	layer.OuterContours->push_back(poly); // outerContour.
-	layer.Index = 1;
-	poly.Points->clear();
-	ptf1.X = 2.5;
-	ptf1.Y = 2.5;
-	poly.Points->push_back(ptf1);
-	ptf1.X = 2.5;
-	ptf1.Y = 7.5;
-	poly.Points->push_back(ptf1);
-	ptf1.X = 7.5;
-	ptf1.Y = 7.5;
-	poly.Points->push_back(ptf1);
-	ptf1.X = 7.5;
-	ptf1.Y = 2.5;
-	poly.Points->push_back(ptf1);
-	layer.InnerContours->push_back(poly); // innerContour.
 
-	Geometry<float>* geom = new Geometry<float>();
-
-
-
-	cout << layer << endl;
-	cout << "============> Geometry info: " << endl;
-	geom->Layers->push_back(layer);
-	geom->Layers->push_back(layer);
-	geom->Layers->push_back(layer);
-	geom->LayerInfo();
-	
-
-	cout << "The area of the triangle is: " << poly.getArea() << endl;
 	auto geometry = Parser<float>::ImportCliFile(path);
 
 	geometry.LayerInfo();
@@ -109,8 +55,7 @@ int main(int argc, char** argv)
 	
 
 
-	cout << "ptf= (" << ptf.X() << ", " << ptf.Y() << ")" << endl;
-	cout << "pt->X()= " << pt->X() << " pt->Y() " << pt->Y() << endl;
+	
 
 	try 
 	{
@@ -123,9 +68,6 @@ int main(int argc, char** argv)
 	}
 
 
-	cout << "number of arguments: " << argc << endl;
-	for (int i = 0; i < argc; i++)
-		cout << "argv[" << i << "]: " << argv[0] << endl;
 	return 0;
 }
 
