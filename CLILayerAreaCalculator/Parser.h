@@ -548,7 +548,13 @@ namespace CLI
 	Geometry<T>& Parser<T>::ImportCliFile(std::string filename)
 	{ 
 		Geometry<T>* geom = new Geometry<T>();
-		ifstream data(filename, ios::in | ios::binary);
+		ifstream data;
+		data.open(filename, ios::in | ios::binary);
+		if (!data)
+		{
+			throw exception("File doesn't exist!");
+		}
+
 		unsigned int position;
 		auto header = ReadHeader(data, position);
 		if (header.Ftype() == Header<T>::FTYPE::ASCII)

@@ -14,54 +14,47 @@
 using namespace std;
 using namespace CLI;
 void checkarguments(int argc);
-void ParseArguments(char** argc);
+int ParseArguments(int argc, char** argv);
 
-string copyright_msg = R"(CLI library  Copyright (C) 2022  Amir Gasmi.
+string copyright_msg = R"(CLI library  Copyright (C) 2022  Amir Gasmi <argasmi@gmail.com>.
 This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.)";
 
+//TODO: Need to provide conditions for use.
+// Add an option to output to file calculation.
+// Add support for output directory.
 int main(int argc, char** argv)
 {
 	
 	//cout<< "PID: "<<std::this_thread::get_id() << endl;
 	string path = R"(D:\MyDownloads\CLI-Candidate-Kit-04-06-21\CLI\box_cli_ascii.cli)";
-
-	/*
-	ifstream data;
-	data.open(path, ios::in);
-	string line;
-	auto pos = (int)data.tellg();
-	data.seekg(0, ios::end);
-	auto size = (int)data.tellg();
-	data.seekg(pos);
-	while(data.tellg() < size)
-	{
-		Parser<float>::getCommandLine(data, line);
-		Parser<float>::trimLine(line);
-		cout<<line<<endl;
-		
-	}
-	data.close();
-	
-	*/
-
-
-
-	auto geometry = Parser<float>::ImportCliFile(path);
-
-	geometry.LayerInfo();
-
 	
 
-
+	
 	
 
 	try 
 	{
-		checkarguments(argc);
+		auto v = ParseArguments(argc, argv);
+		if (v == -1)
+		{
+			checkarguments(argc);
+		}
+		else if (v == 2)
+		{
+			path = argv[2];
+			auto geometry = Parser<float>::ImportCliFile(path);
+
+			geometry.LayerInfo();
+		}
+		else
+		{
+			
+			return -1;
+		}
 	}
-	catch(invalid_argument& e)
+	catch(exception& e)
 	{
 		cerr << e.what() << endl;
 		return -1;
@@ -73,13 +66,72 @@ int main(int argc, char** argv)
 
 void checkarguments(int argc)
 {
-	if(argc != 3)
-		throw invalid_argument(R"(
-Error: The number of arguments is invalid!
-proper call is: program.exe -path path/to/cli/file)");
-
+	throw invalid_argument(R"(Error: The number of arguments is invalid!)");
 }
 
-void ParseArguments(char** argc)
+int ParseArguments(int argc, char** argv)
 {
+	string help_options = R"(
+This program parses Common Layer Interface files in ascii & binary formats. 
+Produces a Geometry data structure and displays area calculation of each layer.
+To run the program type: CLILayerAreaCalculator.exe <options> <arguments>
+options:
+-help: to display this menu.
+-path <path/to/cli/file>	to display area calculations on console.
+-dir <path/to/cli/directory/containing/cli/files	 [to be added]..
+-out <path/to/output/directory/	 [to be added].
+-show c	 display copyright conditions. [to be added].
+-show w displays copyright Warranty.
+)";
+	
+	if (argc == 2)
+	{
+		if (strcmp(argv[1], "-help") == 0)
+		{
+			cout << help_options << endl;
+			return 1;
+		}
+		
+		
+	}
+	else if (argc == 3)
+	{
+		if (strcmp(argv[1], "-path") == 0)
+		{			
+			return 2;
+		}
+		if (strcmp(argv[1], "-dir") == 0)
+		{
+			
+			return 3;
+		}
+		if (strcmp(argv[1], "-show") == 0)
+		{
+
+			return 4;
+		}
+
+	}
+	else if (argc == 4)
+	{
+		if ((strcmp(argv[1], "-path")==0) && (strcmp(argv[3], "-out") == 0))
+		{
+			
+			return 5;
+		}
+		if ((strcmp(argv[1], "-dir") == 0) && (strcmp(argv[3], "-out") == 0))
+		{
+
+			return 6;
+		}
+
+	}
+	else
+	{
+		cout << copyright_msg << endl;
+		cout << "\nType: CLILayerAreaCalculator.exe -help to display options" << endl;
+		return -1;
+
+	}
+	
 }
